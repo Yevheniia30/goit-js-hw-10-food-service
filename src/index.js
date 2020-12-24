@@ -1,6 +1,7 @@
 import './styles.css';
 
 // -----создание шаблона и разметки-----
+
 import menuTemplate from './templates/menu-items.hbs';
 
 import menuList from './menu.json';
@@ -13,7 +14,7 @@ const menuRef = document.querySelector('.js-menu');
 
 menuRef.insertAdjacentHTML('beforeend', markup);
 
-// переключение темы
+// ------переключение темы------------
 
 const bodyRef = document.querySelector('body');
 const themeRef = document.querySelector('#theme-switch-toggle');
@@ -23,35 +24,26 @@ const Theme = {
   DARK: 'dark-theme',
 };
 
-// themeRef.addEventListener('change', themeRefHandler);
-// console.log(themeRefHandler);
+// восстановление при  перезагрузке
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+  bodyRef.classList.add(savedTheme);
+}
 
-const themeRefHandler = event => {
-  if (themeRef.checked) {
+if (savedTheme === Theme.DARK) {
+  themeRef.setAttribute('checked', true);
+}
+
+const themeRefHandler = () => {
+  if (themeRef.checked === true) {
     bodyRef.classList.add(Theme.DARK);
     bodyRef.classList.remove(Theme.LIGHT);
-
-    localStorage.setItem('index', JSON.stringify(Theme.DARK));
-    localStorage.removeItem('index', JSON.stringify(Theme.LIGHT));
-  } else if (!themeRef.checked) {
+  } else if (themeRef.checked === false) {
     bodyRef.classList.replace(Theme.DARK, Theme.LIGHT);
-
-    localStorage.removeItem('index', JSON.stringify(Theme.DARK));
-    localStorage.setItem('index', JSON.stringify(Theme.LIGHT));
   }
+  const currentTheme = bodyRef.getAttribute('class');
+  localStorage.setItem('theme', currentTheme);
 };
 
 themeRef.addEventListener('change', themeRefHandler);
 console.log(themeRefHandler);
-
-const loadTheme = () => {};
-
-const saveTheme = () => {
-  // if (bodyRef.classList) {
-};
-
-// themeRef.addEventListener('change', themeRefHandler);
-// console.log(themeRefHandler);
-
-// localStorage.setItem('Theme', JSON.stringify(Theme));
-// localStorage.removeItem('Theme');
